@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+    <title>Start</title>
+    <script
+            src="http://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<div>
+    <input type="text" name="num1" id="num1">
+    <select name="oper" id="operate">
+        <option value="add">+</option>
+        <option value="sub">-</option>
+        <option value="mul">*</option>
+        <option value="div">/</option>
+    </select>
+    <input type="text" name="num2" id="num2">
+    <button onclick="send2()">전송</button>
+    <div id="display-response">결과</div>
+    <script>
+
+        async function send2() {
+            let num1 = $('#num1').val().trim();
+            let num2 = $('#num2').val().trim();
+            let operate = $('#operate').val().trim();
+            console.log(`${num1} ${num2} ${operate}`);
+            if (!num1 || num1 === '') {
+                $('#display-response').html('입력오류');
+                return;
+            }
+            try{
+                let response = await $.get('/cal/'+num1+'/'+num2+'/'+operate);
+                $('#display-response').html(JSON.stringify(response));
+            } catch (err) {
+                $('#display-response').html(JSON.stringify(err));
+            } finally {
+                $('#display-response').html($('#display-response').html() + '<br>항상 실행');
+            }
+
+        }
+    </script>
+</div>
+</body>
+</html>
